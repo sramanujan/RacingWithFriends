@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title> Client Socket Test </title>
+        <script src="jquery.js"></script>
+        <script>
+            if(typeof io == "undefined") {
+                $.getScript('http://localhost:8028/socket.io/socket.io.js', function() {
+                    socket_io_loaded = true;
+                    checkIfLoadComplete();
+                });
+            }    
+            var socket;
+            function checkIfLoadComplete() {
+                socket = io.connect('http://localhost:8028');
+                socket.on('GameMessage', function(data) {
+                    console.log("Received gamemessage");
+                    console.log(data);
+                });
+                socket.on('message', function(data) {
+                    console.log("Received message");
+                    console.log(data);
+                });
+                socket.on('member_joined_lobby', function (data) {
+                    console.log(data);
+                });
+            }
+            function emitCustom(name, message) {
+                socket.emit(name, message);
+            }
+            function sendCuston(data) {
+                socket.send(data);
+            }
+
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
